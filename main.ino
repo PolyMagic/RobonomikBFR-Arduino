@@ -14,7 +14,34 @@ void setup() {
 }
 
 void setDirection(int d){
-    
+    switch(d)
+    case -1:
+    //SRODEK
+    break;
+    case 0:
+    //LEWA
+    break;
+    case 1:
+    //LEWAGORA
+    break;
+    case 2:
+    //GORA
+    break;
+    case 3:
+    //PRAWAGORA
+    break;
+    case 4:
+    //PRAWA;
+    break;
+    case 5:
+    //PRAWADOLNA;
+    break;
+    case 6:
+    //DOL
+    break;
+    case 7:
+    //DOLLEWY;
+    break;
 }
 
 void loop() {
