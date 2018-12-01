@@ -9,7 +9,12 @@ int prawagora = 9;
 int prawydol = 10;
 
 void setup() {
-  pinMode(esc1,OUTPUT);
+
+  pinMode(lewagora,OUTPUT);
+  pinMode(lewydol , OUTPUT);
+   pinMode(prawagora, OUTPUT);
+ pinMode(prawydol , OUTPUT);
+
 
 
   Serial.begin(9600);
