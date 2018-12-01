@@ -18,7 +18,7 @@ void loop() {
   if(btSerial.available()){
     mess = btSerial.readStringUntil('\n');
   }
-
+////
 
   if(mess.length()>0){
     
