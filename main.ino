@@ -3,7 +3,10 @@
 SoftwareSerial btSerial(2, 3); // RX, TX
 String mess;
 //
-int esc1 = 5; 
+int lewagora = 5; 
+int lewydol = 6;
+int prawagora = 9;
+int prawydol = 10;
 
 void setup() {
   pinMode(esc1,OUTPUT);
@@ -60,7 +63,7 @@ void loop() {
     //   Serial.println(number);
 
       number = map(number,0,100,0,255);
-      analogWrite(esc1,number);
+      analogWrite(lewagora,number);
     }
     else if(mess[0]=='D'){
         int number = mess.substring(1).toInt();
