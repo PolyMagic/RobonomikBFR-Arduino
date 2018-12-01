@@ -36,6 +36,7 @@ void setDirection(int d){
     //SRODEK
     break;
     case 0:
+    setPower(0 , 255);
     //LEWA
     break;
     case 1:
@@ -47,10 +48,11 @@ void setDirection(int d){
     //GORA
     break;
     case 3:
+    setPower(255 , 100);
     //PRAWAGORA
     break;
     case 4:
-    setPower(255 , 255);
+    setPower(255 , 0);
     //PRAWA;
     break;
     case 5:
@@ -65,6 +67,7 @@ void setDirection(int d){
     default:
     setPower(0 , 0)
     }
+    //Koniec zmiany
 }
 
 void loop() {
