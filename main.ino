@@ -13,6 +13,10 @@ void setup() {
   btSerial.begin(9600);
 }
 
+void setDirection(int d){
+    
+}
+
 void loop() {
 
   if(btSerial.available()){
