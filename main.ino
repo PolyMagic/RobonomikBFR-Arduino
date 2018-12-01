@@ -28,25 +28,29 @@ void setPower(int l,int p){
   analogWrite(prawagora,p);
   analogWrite(prawydol,p);
 }
-
+// ZMIANA KODU (DODALEM FUNKCJE setPower)
 void setDirection(int d){
-    switch(d)
+    switch(d){
     case -1:
+    setPower(0,0);
     //SRODEK
     break;
     case 0:
     //LEWA
     break;
     case 1:
+    setPower(100 , 255);
     //LEWAGORA
     break;
     case 2:
+    setPower(255 , 255);
     //GORA
     break;
     case 3:
     //PRAWAGORA
     break;
     case 4:
+    setPower(255 , 255);
     //PRAWA;
     break;
     case 5:
@@ -58,6 +62,9 @@ void setDirection(int d){
     case 7:
     //DOLLEWY;
     break;
+    default:
+    setPower(0 , 0)
+    }
 }
 
 void loop() {
