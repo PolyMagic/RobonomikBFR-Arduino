@@ -16,6 +16,14 @@ void setup() {
   btSerial.begin(9600);
 }
 
+void setPower(int l,int p){
+  analogWrite(lewagora,l);
+  analogWrite(lewydol,l);
+
+  analogWrite(prawagora,p);
+  analogWrite(prawydol,p);
+}
+
 void setDirection(int d){
     switch(d)
     case -1:
