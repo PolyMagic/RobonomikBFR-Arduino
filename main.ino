@@ -3,98 +3,115 @@
 SoftwareSerial btSerial(2, 3); // RX, TX
 String mess;
 //
-int lewagora = 5; 
+int lewagora = 5;
 int lewydol = 6;
 int prawagora = 9;
 int prawydol = 10;
 
-void setup() {
+void setup()
+{
 
-  pinMode(lewagora,OUTPUT);
-  pinMode(lewydol , OUTPUT);
-   pinMode(prawagora, OUTPUT);
- pinMode(prawydol , OUTPUT);
-
-
+  pinMode(lewagora, OUTPUT);
+  pinMode(lewydol, OUTPUT);
+  pinMode(prawagora, OUTPUT);
+  pinMode(prawydol, OUTPUT);
 
   Serial.begin(9600);
   btSerial.begin(9600);
 }
 
-void setPower(int l,int p){
-  analogWrite(lewagora,l);
-  analogWrite(lewydol,l);
 
-  analogWrite(prawagora,p);
-  analogWrite(prawydol,p);
+
+int multPower = 0;
+void setPower(int l, int p)
+{
+
+  int lM = map(l*multPower, 0, 10000, 0, 100);
+  int pM = map(p*multPower, 0, 10000, 0, 100);
+
+  analogWrite(lewagora, lM);
+  analogWrite(lewydol, lM);
+
+  analogWrite(prawagora, pM);
+  analogWrite(prawydol, pM);
 }
 // ZMIANA KODU (DODALEM FUNKCJE setPower)
-void setDirection(int d){
-    switch(d){
-    case -1:
-    setPower(0,0);
-    //SRODEK
+void setDirection(int d)
+{
+  switch (d)
+  {
+  case -1:
+    setPower(0, 0);
+    //Center
     break;
-    case 0:
-    setPower(0 , 255);
-    //LEWA
+  case 0:
+    setPower(0, 100);
+    //Left
     break;
-    case 1:
-    setPower(100 , 255);
-    //LEWAGORA
+  case 1:
+    setPower(50, 100);
+    //LeftUp
     break;
-    case 2:
-    setPower(255 , 255);
-    //GORA
+  case 2:
+    setPower(100, 100);
+    //Up
     break;
-    case 3:
-    setPower(255 , 100);
-    //PRAWAGORA
+  case 3:
+    setPower(100, 50);
+    //RightUp
     break;
-    case 4:
-    setPower(255 , 0);
-    //PRAWA;
+  case 4:
+    setPower(100, 0);
+    //Right;
     break;
-    case 5:
-    //PRAWADOLNA;
+  case 5:
+    //RightDown;
+    setPower(0, 0);
     break;
-    case 6:
-    //DOL
+  case 6:
+    //Down
+    setPower(0, 0);
     break;
-    case 7:
+  case 7:
     //DOLLEWY;
+    setPower(0, 0);
     break;
-    default:
-    setPower(0 , 0)
-    }
-    //Koniec zmiany
+  default:
+    setPower(0, 0);
+  }
 }
 
-void loop() {
+void loop()
+{
 
-  if(btSerial.available()){
+  if (btSerial.available())
+  {
     mess = btSerial.readStringUntil('\n');
   }
-////
+  ////
 
-  if(mess.length()>0){
-    
+  if (mess.length() > 0)
+  {
+
     Serial.println(mess);
-    
-    if(mess[0]=='P'){
+
+    if (mess[0] == 'P')
+    {
       int number = mess.substring(1).toInt();
-    //   Serial.println(number);
+      //   Serial.println(number);
 
-      number = map(number,0,100,0,255);
-      analogWrite(lewagora,number);
+      // number = map(number, 0, 100, 0, 255);
+      multPower = number;
+      // analogWrite(lewagora,number);
+      // setDirection();
     }
-    else if(mess[0]=='D'){
-        int number = mess.substring(1).toInt();
-        // Serial.println(number);
+    else if (mess[0] == 'D')
+    {
+      int number = mess.substring(1).toInt();
+      // Serial.println(number);
+      setDirection(number);
     }
-//
-    mess="";
+    //
+    mess = "";
   }
-
-
 }
