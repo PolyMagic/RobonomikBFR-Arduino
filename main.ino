@@ -2,7 +2,7 @@
 
 SoftwareSerial btSerial(2, 3); // RX, TX
 String mess;
-//
+
 int lewagora = 5;
 int lewydol = 6;
 int prawagora = 9;
@@ -18,16 +18,17 @@ void setup()
 
   Serial.begin(9600);
   btSerial.begin(9600);
+  Serial.println("Start");
 }
-
-
 
 int multPower = 0;
 void setPower(int l, int p)
 {
 
-  int lM = map(l*multPower, 0, 10000, 0, 100);
-  int pM = map(p*multPower, 0, 10000, 0, 100);
+  int lM = map(l * multPower, 0, 10000, 0, 100);
+  int pM = map(p * multPower, 0, 10000, 0, 100);
+
+  if( lM > 100 || pM > 100) return;
 
   analogWrite(lewagora, lM);
   analogWrite(lewydol, lM);
@@ -35,7 +36,38 @@ void setPower(int l, int p)
   analogWrite(prawagora, pM);
   analogWrite(prawydol, pM);
 }
-// ZMIANA KODU (DODALEM FUNKCJE setPower)
+
+void loop()
+{
+
+  if (btSerial.available())
+  {
+    mess = btSerial.readStringUntil('\n');
+  }
+  ////
+
+  if (mess.length() > 0)
+  {
+
+    Serial.println(mess);
+
+    if (mess[0] == 'P')
+    {
+      int number = mess.substring(1).toInt();
+  
+      multPower = number;
+    }
+    else if (mess[0] == 'D')
+    {
+      int number = mess.substring(1).toInt();
+      // Serial.println(number);
+      setDirection(number);
+    }
+    //
+    mess = "";
+  }
+}
+
 void setDirection(int d)
 {
   switch (d)
@@ -78,40 +110,5 @@ void setDirection(int d)
     break;
   default:
     setPower(0, 0);
-  }
-}
-
-void loop()
-{
-
-  if (btSerial.available())
-  {
-    mess = btSerial.readStringUntil('\n');
-  }
-  ////
-
-  if (mess.length() > 0)
-  {
-
-    Serial.println(mess);
-
-    if (mess[0] == 'P')
-    {
-      int number = mess.substring(1).toInt();
-      //   Serial.println(number);
-
-      // number = map(number, 0, 100, 0, 255);
-      multPower = number;
-      // analogWrite(lewagora,number);
-      // setDirection();
-    }
-    else if (mess[0] == 'D')
-    {
-      int number = mess.substring(1).toInt();
-      // Serial.println(number);
-      setDirection(number);
-    }
-    //
-    mess = "";
   }
 }
