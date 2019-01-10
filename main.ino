@@ -29,6 +29,9 @@ void setPower(int l, int p)
   if( lM > 100 || pM > 100) return;
   if( lM < 0 || pM < 0) return;
 
+  Serial.println("l:"+ String(lM));
+  Serial.println("p:"+ String(pM));
+
   analogWrite(leftUp, lM);
   analogWrite(leftDown, lM);
 
@@ -50,7 +53,7 @@ void loop()
   if (mess.length() > 0)
   {
 
-    Serial.println(mess);
+   
 
     lastTime = millis();
 
@@ -79,8 +82,7 @@ void loop()
 }
 
 void setDirection(int d)
-{
-  switch (d)
+{  switch (d)
   {
   case -1:
     setPower(0, 0);
