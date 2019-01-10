@@ -3,6 +3,7 @@
 SoftwareSerial btSerial(2, 3); // RX, TX
 String mess;
 
+
 int leftUp = 5;
 int leftDown = 6;
 int rightUp = 9;
@@ -15,6 +16,8 @@ void setup()
   pinMode(rightUp, OUTPUT);
   pinMode(rightDown, OUTPUT);
 
+  pinMode(11, OUTPUT);
+
   Serial.begin(9600);
   btSerial.begin(9600);
   Serial.println("Start");
@@ -26,18 +29,27 @@ void setPower(int l, int p)
   int lM = map(l * multPower, 0, 10000, 0, 100);
   int pM = map(p * multPower, 0, 10000, 0, 100);
 
+  int lM = l;
+  int pM = p;
+
   if( lM > 100 || pM > 100) return;
   if( lM < 0 || pM < 0) return;
 
   analogWrite(leftUp, lM);
+  analogWrite(11, lM);
+
   analogWrite(leftDown, lM);
 
   analogWrite(rightUp, pM);
   analogWrite(rightDown, pM);
+
+  // Serial.println(String(lM));
 }
 
 
-int lastTime = 0;
+static unsigned long lastTime = 0;
+
+bool onOffSwith = true;
 
 void loop()
 {
@@ -50,8 +62,6 @@ void loop()
 
   if (mess.length() > 0)
   {
-
-    Serial.println(mess);
 
     lastTime = millis();
 
@@ -75,19 +85,28 @@ void loop()
   }
 
   if(millis() - lastTime > 1000){
-    setPower(0,0);
+    if(onOffSwith) {setPower(1,1); onOffSwith = false;}
+    else{
+      setPower(0,0); onOffSwith = true;
+    }
+
+    lastTime = millis();
+    Serial.println("ulumulu");
+    Serial.println(millis());
   }
+
+
 }
 
 void setDirection(int d)
 {  switch (d)
   {
   case -1:
-    setPower(0, 0);
+    setPower(1, 1);
     //Center
     break;
   case 0:
-    setPower(0, 100);
+    setPower(1, 100);
     //Left
     break;
   case 1:
@@ -103,22 +122,22 @@ void setDirection(int d)
     //RightUp
     break;
   case 4:
-    setPower(100, 0);
+    setPower(100, 1);
     //Right;
     break;
   case 5:
     //RightDown;
-    setPower(0, 0);
+    setPower(1, 1);
     break;
   case 6:
     //Down
-    setPower(0, 0);
+    setPower(1, 1);
     break;
   case 7:
     //DOLLEWY;
-    setPower(0, 0);
+    setPower(1, 1);
     break;
   default:
-    setPower(0, 0);
+    setPower(1, 1);
   }
 }
