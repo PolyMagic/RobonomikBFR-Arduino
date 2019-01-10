@@ -3,18 +3,17 @@
 SoftwareSerial btSerial(2, 3); // RX, TX
 String mess;
 
-int lewagora = 5;
-int lewydol = 6;
-int prawagora = 9;
-int prawydol = 10;
+int leftUp = 5;
+int leftDown = 6;
+int rightUp = 9;
+int rightDown = 10;
 
 void setup()
 {
-
-  pinMode(lewagora, OUTPUT);
-  pinMode(lewydol, OUTPUT);
-  pinMode(prawagora, OUTPUT);
-  pinMode(prawydol, OUTPUT);
+  pinMode(leftUp, OUTPUT);
+  pinMode(leftDown, OUTPUT);
+  pinMode(rightUp, OUTPUT);
+  pinMode(rightDown, OUTPUT);
 
   Serial.begin(9600);
   btSerial.begin(9600);
@@ -30,16 +29,18 @@ void setPower(int l, int p)
   if( lM > 100 || pM > 100) return;
   if( lM < 0 || pM < 0) return;
 
-  analogWrite(lewagora, lM);
-  analogWrite(lewydol, lM);
+  analogWrite(leftUp, lM);
+  analogWrite(leftDown, lM);
 
-  analogWrite(prawagora, pM);
-  analogWrite(prawydol, pM);
+  analogWrite(rightUp, pM);
+  analogWrite(rightDown, pM);
 }
+
+
+int lastTime = 0;
 
 void loop()
 {
-
   if (btSerial.available())
   {
     mess = btSerial.readStringUntil('\n');
@@ -50,6 +51,8 @@ void loop()
   {
 
     Serial.println(mess);
+
+    lastTime = millis();
 
     if (mess[0] == 'P')
     {
@@ -69,6 +72,10 @@ void loop()
     //
     mess = "";
   }
+
+  if(millis() - lastTime > 1000){
+    setPower(0,0);
+  }
 }
 
 void setDirection(int d)
@@ -85,7 +92,7 @@ void setDirection(int d)
     break;
   case 1:
     setPower(50, 100);
-    //LeftUp
+    //leftUp
     break;
   case 2:
     setPower(100, 100);
