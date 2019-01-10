@@ -24,11 +24,11 @@ void setup()
 int multPower = 0;
 void setPower(int l, int p)
 {
-
   int lM = map(l * multPower, 0, 10000, 0, 100);
   int pM = map(p * multPower, 0, 10000, 0, 100);
 
   if( lM > 100 || pM > 100) return;
+  if( lM < 0 || pM < 0) return;
 
   analogWrite(lewagora, lM);
   analogWrite(lewydol, lM);
@@ -55,6 +55,9 @@ void loop()
     {
       int number = mess.substring(1).toInt();
   
+      if(number <= 0 ) number = 0;
+      if(number > 10000) number = 0;
+
       multPower = number;
     }
     else if (mess[0] == 'D')
