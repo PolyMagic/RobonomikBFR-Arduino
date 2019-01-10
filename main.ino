@@ -29,8 +29,8 @@ void setPower(int l, int p)
   int lM = map(l * multPower, 0, 10000, 0, 100);
   int pM = map(p * multPower, 0, 10000, 0, 100);
 
-  int lM = l;
-  int pM = p;
+  // int lM = l;
+  // int pM = p;
 
   if( lM > 100 || pM > 100) return;
   if( lM < 0 || pM < 0) return;
@@ -91,8 +91,6 @@ void loop()
     }
 
     lastTime = millis();
-    Serial.println("ulumulu");
-    Serial.println(millis());
   }
 
 
