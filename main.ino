@@ -85,6 +85,10 @@ void loop()
   }
 
   if(millis() - lastTime > 1000){
+    // if(multPower<=0){
+      multPower = 100;
+    // }
+
     if(onOffSwith) {setPower(1,1); onOffSwith = false;}
     else{
       setPower(0,0); onOffSwith = true;
