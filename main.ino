@@ -3,11 +3,15 @@
 SoftwareSerial btSerial(2, 3); // RX, TX
 String mess;
 
-
 int leftUp = 5;
 int leftDown = 6;
 int rightUp = 9;
 int rightDown = 10;
+
+
+static unsigned long lastTime = 0;
+
+int multPower = 0;
 
 void setup()
 {
@@ -16,38 +20,43 @@ void setup()
   pinMode(rightUp, OUTPUT);
   pinMode(rightDown, OUTPUT);
 
-  pinMode(11, OUTPUT);
+  pinMode(8, OUTPUT);
+
+  pinMode(13, OUTPUT);
+  
 
   Serial.begin(9600);
   btSerial.begin(9600);
   Serial.println("Start");
+
+  pinMode(7, OUTPUT);
+  digitalWrite(7, LOW);
 }
 
-int multPower = 0;
-void setPower(int l, int p)
+
+void setReverseDir(bool l,bool r){
+  digitalWrite(8,l);
+}
+
+void setPower(int l, int r)
 {
   int lM = map(l * multPower, 0, 10000, 0, 100);
-  int pM = map(p * multPower, 0, 10000, 0, 100);
+  int rM = map(r * multPower, 0, 10000, 0, 100);
 
-  // int lM = l;
-  // int pM = p;
-
-  if( lM > 100 || pM > 100) return;
-  if( lM < 0 || pM < 0) return;
+  if( lM > 100 || rM > 100) return;
+  if( lM < 0 || rM < 0) return;
 
   analogWrite(leftUp, lM);
   analogWrite(11, lM);
 
   analogWrite(leftDown, lM);
 
-  analogWrite(rightUp, pM);
-  analogWrite(rightDown, pM);
+  analogWrite(rightUp, rM);
+  analogWrite(rightDown, rM);
 
-  // Serial.println(String(lM));
+   Serial.println(lM);
 }
 
-
-static unsigned long lastTime = 0;
 
 bool onOffSwith = true;
 
@@ -58,11 +67,9 @@ void loop()
   {
     mess = btSerial.readStringUntil('\n');
   }
-  ////
 
   if (mess.length() > 0)
   {
-
     lastTime = millis();
 
     if (mess[0] == 'P')
@@ -77,17 +84,16 @@ void loop()
     else if (mess[0] == 'D')
     {
       int number = mess.substring(1).toInt();
-      // Serial.println(number);
       setDirection(number);
     }
-    //
+    
     mess = "";
   }
 
   if(millis() - lastTime > 1000){
-    // if(multPower<=0){
-      multPower = 100;
-    // }
+  
+    multPower = 100;
+    
 
     if(onOffSwith) {setPower(1,1); onOffSwith = false;}
     else{
@@ -105,10 +111,12 @@ void setDirection(int d)
   {
   case -1:
     setPower(1, 1);
+    setReverseDir(false,false);
     //Center
     break;
   case 0:
-    setPower(1, 100);
+    setPower(100, 100);   
+    setReverseDir(true,false);
     //Left
     break;
   case 1:
@@ -117,6 +125,7 @@ void setDirection(int d)
     break;
   case 2:
     setPower(100, 100);
+    setReverseDir(false,false);
     //Up
     break;
   case 3:
@@ -125,6 +134,7 @@ void setDirection(int d)
     break;
   case 4:
     setPower(100, 1);
+    setReverseDir(false,true);
     //Right;
     break;
   case 5:
@@ -134,6 +144,7 @@ void setDirection(int d)
   case 6:
     //Down
     setPower(1, 1);
+    setReverseDir(true,true);
     break;
   case 7:
     //DOLLEWY;
