@@ -22,7 +22,7 @@ void setup()
 
   pinMode(8, OUTPUT);
 
-  pinMode(13, OUTPUT);
+  pinMode(11, OUTPUT);
   
 
   Serial.begin(9600);
@@ -54,7 +54,7 @@ void setPower(int l, int r)
   analogWrite(rightUp, rM);
   analogWrite(rightDown, rM);
 
-   Serial.println(lM);
+  Serial.println(lM);
 }
 
 
@@ -95,7 +95,7 @@ void loop()
     multPower = 100;
     
 
-    if(onOffSwith) {setPower(1,1); onOffSwith = false;}
+    if(onOffSwith) {setPower(10,10); onOffSwith = false;}
     else{
       setPower(0,0); onOffSwith = true;
     }
